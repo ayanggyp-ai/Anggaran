@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dashboard Deviasi Anggaran - BPS Provinsi Jambi</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css?v=20260901" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  </head>
+
+  <body data-page="deviasi">
+    <!-- PAGE TRANSITION OVERLAY -->
+    <div class="page-transition" id="pageTransition">
+      <div class="pt-content">
+        <div class="pt-ring-wrap">
+          <div class="pt-logo"><img src="logo-bps.svg" alt="Logo BPS" class="logo-img" /></div>
+        </div>
+        <span class="pt-label">Memuat...</span>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="logo-box">
+          <img src="logo-bps.svg" alt="Logo BPS" class="logo-img" />
+        </div>
+        <div class="sidebar-brand-text">
+          <span>BADAN PUSAT STATISTIK</span>
+          <strong>Provinsi Jambi</strong>
+        </div>
+        <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup menu">✕</button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="../welcome/index.html" class="sidebar-link sidebar-link-welcome" data-page="welcome" data-transition-link>
+          <span class="sidebar-link-icon">★</span>
+          Welcome
+        </a>
+
+        <a href="../dashboard-utama/index.html" class="sidebar-link sidebar-link-home" data-page="utama" data-transition-link>
+          <span class="sidebar-link-icon">⌂</span>
+          Dashboard Utama
+        </a>
+
+        <span class="sidebar-nav-label">Dashboard Anggaran</span>
+
+        <a href="../daya-serap-anggaran/index.html" class="sidebar-link" data-page="daya-serap" data-transition-link>
+          <span class="sidebar-link-icon">▦</span>
+          Daya Serap Anggaran
+        </a>
+
+        <a href="../deviasi-anggaran/index.html" class="sidebar-link" data-page="deviasi" data-transition-link>
+          <span class="sidebar-link-icon">⇅</span>
+          Deviasi Anggaran
+        </a>
+
+        <a href="../capaian-output/index.html" class="sidebar-link" data-page="capaian" data-transition-link>
+          <span class="sidebar-link-icon">◎</span>
+          Capaian Output
+        </a>
+
+        <a href="../rencana-penarikan/index.html" class="sidebar-link" data-page="rencana" data-transition-link>
+          <span class="sidebar-link-icon">$</span>
+          Rencana Penarikan
+        </a>
+
+        <a href="../perjadin/index.html" class="sidebar-link" data-page="perjadin" data-transition-link>
+          <span class="sidebar-link-icon">✈</span>
+          Perjalanan Dinas
+        </a>
+      </nav>
+    </aside>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header class="main-header">
+      <div class="header-container">
+        <div class="header-left">
+          <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Buka menu navigasi" title="Menu">
+            <span></span><span></span><span></span>
+          </button>
+
+          <div class="brand">
+            <div class="logo-box">
+              <img src="logo-bps.svg" alt="Logo BPS" class="logo-img" />
+            </div>
+
+            <div class="brand-text">
+              <span class="brand-small">BADAN PUSAT STATISTIK</span>
+              <h1>Provinsi Jambi</h1>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-info">
+          <span class="status-dot"></span>
+          <span>Dashboard Deviasi Anggaran</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main class="container">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span>●</span>
+            MONITORING DEVIASI PENYERAPAN ANGGARAN
+          </div>
+
+          <h2>
+            Dashboard Deviasi<br />
+            <span>Penyerapan Anggaran BPS Provinsi Jambi</span>
+          </h2>
+
+          <p>
+            Membandingkan target penyerapan bulanan dengan realisasi aktual
+            per jenis belanja dan per Rincian Output (RO), untuk memantau
+            output mana saja yang menyimpang dari rencana.
+          </p>
+        </div>
+
+        <!-- PERIODE / REFRESH -->
+        <div class="period-box">
+          <label>Periode Data</label>
+
+          <div class="select-wrapper">
+            <button id="refreshBtn" type="button" class="period-refresh-btn">
+              ⟳ Muat Ulang Data
+            </button>
+          </div>
+
+          <div class="period-year" id="periodInfo">Memuat periode…</div>
+        </div>
+      </section>
+
+      <!-- =========================
+             STATISTICS
+        ========================== -->
+      <section class="statistics-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">RINGKASAN</span>
+            <h3>Statistik Deviasi Keseluruhan</h3>
+          </div>
+
+          <div id="dataStatus" class="data-status">Memuat data...</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <span>▦</span>
+            </div>
+            <div class="stat-content">
+              <span class="stat-title">Total Target</span>
+              <strong id="totalTarget">-</strong>
+              <small>Target penyerapan periode berjalan</small>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <span>↗</span>
+            </div>
+            <div class="stat-content">
+              <span class="stat-title">Total Realisasi</span>
+              <strong id="totalRealisasi">-</strong>
+              <small id="totalRealisasiPct">- % dari target</small>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <span>◈</span>
+            </div>
+            <div class="stat-content">
+              <span class="stat-title">Total Deviasi</span>
+              <strong id="totalDeviasi">-</strong>
+              <small id="totalDeviasiPct">- % dari target</small>
+            </div>
+          </div>
+
+          <div class="stat-card highlight-card">
+            <div class="stat-icon gold">
+              <span>★</span>
+            </div>
+            <div class="stat-content">
+              <span class="stat-title">Output Sesuai Target</span>
+              <strong id="totalSesuai">-</strong>
+              <small id="totalSesuaiSub">dari total output</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-insight-banner" id="statsInsightBanner">Memuat insight...</div>
+      </section>
+
+      <!-- =========================
+             JENIS BELANJA
+        ========================== -->
+      <section class="statistics-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">RINCIAN</span>
+            <h3>Deviasi per Jenis Belanja</h3>
+          </div>
+        </div>
+
+        <div class="belanja-grid" id="belanjaGrid">
+          <!-- diisi JavaScript -->
+        </div>
+      </section>
+
+      <!-- =========================
+             VISUALISASI DATA
+        ========================== -->
+      <section class="chart-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">VISUALISASI</span>
+            <h3>Grafik Deviasi Anggaran</h3>
+          </div>
+        </div>
+
+        <div class="chart-grid chart-grid-thirds">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h4>Target vs Realisasi per Jenis Belanja</h4>
+              <p>Perbandingan target dan realisasi untuk belanja Pegawai, Barang, dan Modal.</p>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="chartBelanja"></canvas>
+            </div>
+            <div class="chart-insight" id="chartBelanjaInsight">Memuat insight...</div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h4>Output dengan Deviasi Terbesar</h4>
+              <p>6 Rincian Output dengan persentase deviasi absolut tertinggi.</p>
+            </div>
+            <div class="chart-canvas-wrap short">
+              <canvas id="chartTopDeviasi"></canvas>
+            </div>
+            <div class="chart-insight" id="chartTopDeviasiInsight">Memuat insight...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+             DAFTAR OUTPUT
+        ========================== -->
+      <section class="ranking-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">RINCIAN LENGKAP</span>
+            <h3>Deviasi per Rincian Output (RO)</h3>
+          </div>
+
+          <div class="sort-wrapper">
+            <label for="sortSelect">Urutkan</label>
+            <select id="sortSelect">
+              <option value="deviasi-desc">% Deviasi Tertinggi</option>
+              <option value="deviasi-asc">% Deviasi Terendah</option>
+              <option value="target-desc">Target Terbesar</option>
+              <option value="original">Urutan Asli</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="portal-toolbar tree-toolbar">
+          <div class="portal-search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="itemSearch" placeholder="Cari kode / rincian output…" />
+          </div>
+
+          <div class="portal-filter-wrapper">
+            <label for="statusFilter">Status</label>
+            <select id="statusFilter">
+              <option value="all">Semua</option>
+              <option value="Sesuai">Sesuai</option>
+              <option value="Deviasi">Deviasi</option>
+            </select>
+          </div>
+
+          <div class="portal-filter-wrapper">
+            <label for="belanjaFilter">Jenis Belanja</label>
+            <select id="belanjaFilter">
+              <option value="all">Semua</option>
+              <option value="51">Belanja Pegawai</option>
+              <option value="52">Belanja Barang</option>
+              <option value="53">Belanja Modal</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- LIST CONTAINER -->
+        <div id="itemGrid" class="deviasi-grid">
+          <!-- Dibuat oleh JavaScript -->
+        </div>
+
+        <div class="portal-empty" id="itemEmpty" style="display:none;">
+          Tidak ada output yang cocok dengan pencarian/filter kamu.
+        </div>
+
+        <!-- LOADING -->
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <p>Mengambil data dari Google Sheets...</p>
+        </div>
+
+        <!-- ERROR -->
+        <div id="errorMessage" class="error-message">
+          <div class="error-icon">!</div>
+          <h3>Data tidak dapat dimuat</h3>
+          <p id="errorText">Terjadi kesalahan ketika mengambil data.</p>
+          <button onclick="loadData()">Coba Lagi</button>
+        </div>
+      </section>
+
+      <!-- INFO STRIP -->
+      <div class="info-strip">
+        <div class="info-dot">i</div>
+        <p>
+          <strong>Dashboard ini terhubung langsung dengan Google Sheets</strong>
+          "Deviasi_2026" sebagai sumber data, sehingga informasi yang
+          ditampilkan selalu mengikuti pembaruan terbaru dari monitoring
+          bulanan.
+        </p>
+      </div>
+    </main>
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="main-footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <div class="footer-logo"><img src="logo-bps.svg" alt="Logo BPS" class="logo-img" /></div>
+          <div>
+            <strong>BADAN PUSAT STATISTIK</strong>
+            <span>PROVINSI JAMBI</span>
+          </div>
+        </div>
+
+        <div class="footer-info">
+          <p>Dashboard Monitoring Deviasi Penyerapan Anggaran BPS Provinsi Jambi</p>
+          <p>Jl. A. Yani No. 4, Telanaipura, Kota Jambi, Jambi</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Badan Pusat Statistik Provinsi Jambi</span>
+        <span>Dashboard Deviasi Anggaran</span>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="transition.js?v=20260901"></script>
+    <script src="sidebar.js?v=20260901"></script>
+    <script src="script.js?v=20260901"></script>
+  </body>
+</html>
