@@ -108,8 +108,8 @@ async function loadData() {
 ========================================================= */
 
 async function fetchSheetRows(spreadsheetId, gid) {
-  const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?gid=${gid}&headers=0&tqx=out:json`;
-  const response = await fetch(url);
+  const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?gid=${gid}&headers=0&tqx=out:json&_=${Date.now()}`;
+  const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
   const text = await response.text();
   const json = parseGoogleResponse(text);
@@ -522,4 +522,12 @@ refreshBtn.addEventListener("click", () => loadData());
 
 document.addEventListener("DOMContentLoaded", () => {
   loadData();
+  // Auto-refresh: tiap 2 menit & saat tab kembali dibuka, agar perubahan di spreadsheet ikut tampil
+  const AUTO_REFRESH_MS = 120000;
+  let lastLoad = Date.now();
+  const refresh = () => { lastLoad = Date.now(); loadData(); };
+  setInterval(() => { if (!document.hidden) refresh(); }, AUTO_REFRESH_MS);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && Date.now() - lastLoad > 30000) refresh();
+  });
 });
