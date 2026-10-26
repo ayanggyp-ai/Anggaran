@@ -6,7 +6,7 @@
 ========================================================= */
 
 const SPREADSHEET_ID = "1RgVCRkX3GhA7tsxR3QdpGr7jW6wa5DPyRgiVe843ZfQ";
-const SHEET_GID = "1351106632";
+const SHEET_GID = "496275393"; // sebelumnya 1351106632
 
 /* =========================================================
    PEMETAAN KOLOM SHEET (A..M, index 0..12)
@@ -90,6 +90,7 @@ async function loadData() {
     const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?gid=${SHEET_GID}&headers=0&tqx=out:json&_=${Date.now()}`;
 
     const response = await fetch(url, { cache: "no-store" });
+    console.log("[dashboard v2] data diambil", new Date().toLocaleTimeString("id-ID"), url);
 
     if (!response.ok) {
       throw new Error(`HTTP Error ${response.status}`);

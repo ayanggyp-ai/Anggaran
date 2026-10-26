@@ -79,6 +79,7 @@ async function loadData() {
     const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?gid=${SHEET_GID}&headers=0&tqx=out:json&_=${Date.now()}`;
 
     const response = await fetch(url, { cache: "no-store" });
+    console.log("[dashboard v2] data diambil", new Date().toLocaleTimeString("id-ID"), url);
     if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
 
     const text = await response.text();

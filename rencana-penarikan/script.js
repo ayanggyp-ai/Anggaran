@@ -3,7 +3,7 @@
 ========================================================= */
 
 const SPREADSHEET_ID = "1N1sUsFn2DiVI_qlgy6ejZtYBLTl3MCEHJzPb90Dqz0U";
-const SHEET_GID = "1322919422";
+const SHEET_GID = "1051439658"; // sebelumnya 1322919422
 
 const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agust", "Sept", "Okt", "Nov", "Des"];
 const MONTH_LABELS_FULL = [
@@ -96,6 +96,7 @@ async function loadData() {
     const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?gid=${SHEET_GID}&headers=0&tqx=out:json&_=${Date.now()}`;
 
     const response = await fetch(url, { cache: "no-store" });
+    console.log("[dashboard v2] data diambil", new Date().toLocaleTimeString("id-ID"), url);
     if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
 
     const text = await response.text();

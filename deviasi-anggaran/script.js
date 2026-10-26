@@ -3,7 +3,7 @@
 ========================================================= */
 
 const SPREADSHEET_ID = "1qSGptetXzJGEqpKa4KbHIjMiSxv4QxAFzN4sRX8_NBk";
-const SHEET_GID = "1691939996";
+const SHEET_GID = "1858913275"; // sebelumnya 1691939996
 
 const NAME_MAP = { 51: "Belanja Pegawai", 52: "Belanja Barang", 53: "Belanja Modal" };
 
@@ -46,6 +46,7 @@ async function loadData() {
     const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?gid=${SHEET_GID}&headers=0&tqx=out:json&_=${Date.now()}`;
 
     const response = await fetch(url, { cache: "no-store" });
+    console.log("[dashboard v2] data diambil", new Date().toLocaleTimeString("id-ID"), url);
 
     if (!response.ok) {
       throw new Error(`HTTP Error ${response.status}`);

@@ -6,9 +6,9 @@
 ========================================================= */
 
 const SOURCES = {
-  dayaSerap: { id: "1RgVCRkX3GhA7tsxR3QdpGr7jW6wa5DPyRgiVe843ZfQ", gid: "1351106632" },
+  dayaSerap: { id: "1RgVCRkX3GhA7tsxR3QdpGr7jW6wa5DPyRgiVe843ZfQ", gid: "496275393" },
   perjadin: { id: "1d61tdWssNIBiUh4sgK32V_K4vtYZhIzIO7W-lh1uFu0", gid: "1945885825" },
-  rencana: { id: "1N1sUsFn2DiVI_qlgy6ejZtYBLTl3MCEHJzPb90Dqz0U", gid: "1322919422" },
+  rencana: { id: "1N1sUsFn2DiVI_qlgy6ejZtYBLTl3MCEHJzPb90Dqz0U", gid: "1051439658" },
 };
 
 const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agust", "Sept", "Okt", "Nov", "Des"];
@@ -110,6 +110,7 @@ async function loadData() {
 async function fetchSheetRows(spreadsheetId, gid) {
   const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?gid=${gid}&headers=0&tqx=out:json&_=${Date.now()}`;
   const response = await fetch(url, { cache: "no-store" });
+    console.log("[dashboard v2] data diambil", new Date().toLocaleTimeString("id-ID"), url);
   if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
   const text = await response.text();
   const json = parseGoogleResponse(text);
